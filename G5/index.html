@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiệm Ăn Vặt GenZ - Ship Tận Cửa</title>
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #feca57;
+            --dark-color: #2d3436;
+            --bg-color: #fff5f5;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-color); margin: 0; padding: 0; color: var(--dark-color); }
+        
+        /* Header & Logo */
+        header { text-align: center; padding: 30px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .logo { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--secondary-color); margin-bottom: 10px; }
+
+        .container { display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; max-width: 1200px; margin: auto; }
+        
+        /* Menu */
+        .menu { flex: 2; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .food-card { background: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; }
+        .food-card:hover { transform: translateY(-8px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .food-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; }
+        
+        /* Giỏ hàng & Form vận chuyển */
+        .sidebar { flex: 1; min-width: 320px; }
+        .card-panel { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 14px; }
+        
+        /* Inputs & Buttons */
+        input, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        button:hover { background: #ee5253; }
+        .btn-qty { background: #f1f2f6; color: black; padding: 2px 10px; }
+
+        /* Footer */
+        footer { background: var(--dark-color); color: white; padding: 40px 20px; margin-top: 50px; }
+        .footer-content { max-width: 1200px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
+        .footer-section h4 { color: var(--secondary-color); margin-bottom: 15px; }
+        .footer-bottom { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #444; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://png.pngtree.com/png-vector/20230615/ourlarge/pngtree-sparkling-gem-crystal-diamond-logo-design-vector-png-image_7144335.png" alt="Logo Tiệm" class="logo">
+    <h1 style="margin:0; color: var(--primary-color)">5-GEMS💎</h1>
+    <p>Nhanh chóng - Tiện lợi - Ăn là ghiền!</p>
+</header>
+
+<div class="container">
+    <div class="menu" id="food-menu"></div>
+
+    <div class="sidebar">
+        <div class="card-panel">
+            <h3>Đơn hàng của bạn 🛒</h3>
+            <div id="cart-content"><p>Chưa có món nào...</p></div>
+            <hr>
+            <input type="text" id="coupon-input" placeholder="Mã giảm giá (ví dụ: GEM10)">
+            <button onclick="applyDiscount()" style="width: 100%; background: #576571;">Áp dụng mã</button>
+            <h3 id="total-price" style="color: var(--primary-color);">Tổng cộng: 0đ</h3>
+        </div>
+
+        <div class="card-panel">
+    <h3>Thông tin giao hàng 🚚</h3>
+    <input type="text" id="cus-name" placeholder="Họ và tên người nhận">
+    <input type="tel" id="cus-phone" placeholder="Số điện thoại">
+    <textarea id="cus-address" rows="3" placeholder="Địa chỉ nhận hàng chi tiết..."></textarea>
+    
+    <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+        <input type="text" id="ship-coupon" placeholder="Mã Freeship (FREESHIP)">
+        <button onclick="applyShipCode()" style="background: #2ecc71; white-space: nowrap;">Áp dụng</button>
+    </div>
+    <p id="ship-status" style="font-size: 12px; margin: 0; color: #27ae60;"></p>
+
+    <button onclick="checkout()" style="width: 100%; font-size: 1.1em; padding: 15px; margin-top: 10px;">ĐẶT HÀNG NGAY </button>
+</div>
+
+    </div>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>VỀ CHÚNG TÔI</h4>
+            <p>Tiệm ăn vặt 5-GEMS chuyên cung cấp các món ăn vặt hot trend, "Ăn là mê, chê sao được".</p>
+        </div>
+        <div class="footer-section">
+            <h4>LIÊN HỆ</h4>
+            <p>📍 Địa chỉ: 123 Đường Ăn Uống, Song Phú-Vĩnh Long</p>
+            <p>📞 Hotline: 090 123 3636</p>
+            <p>📧 Email: hello@anvatgenz.com</p>
+        </div>
+        <div class="footer-section">
+            <h4>THEO DÕI TIỆM</h4>
+            <p>Facebook | Instagram | TikTok</p>
+            <p>Mở cửa: 08:00 - 22:00</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 Tiệm Ăn Vặt 5-GEMS. Tất cả các quyền được bảo lưu.
+    </div>
+</footer>
+
+<script>
+    // 1. Danh sách món ăn
+    const foods = [
+        { id: 1, name: "Bánh Tráng Nướng", price: 15000, img: "https://bepos.io/wp-content/uploads/2024/04/cach-lam-banh-trang-nuong-de-kinh-doanh-8.jpg" },
+        { id: 2, name: "Cơm Cháy Chà Bông", price: 20000, img: "https://product.hstatic.net/200000865473/product/z5338140523123_dba4bc52d8f5f7df0965608557cdfb99_60eaf33c53864a63b8baef3ae0989e47_master.jpg" },
+        { id: 3, name: "Trà Sữa", price: 20000, img: "https://madg.vn/wp-content/uploads/2024/11/cach-lam-tra-sua-hokkaido-09-min.jpg" },
+        { id: 4, name: "Bánh Tráng Trộn", price: 15000, img: "https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/cach_lam_banh_trang_tron_tac_2_6efea7dc72.png" },
+        { id: 5, name: "Chân Gà Sả Tắc", price: 50000, img: "https://file.hstatic.net/200000700229/article/lam-chan-ga-ngam-sa-tac-xoai-thumb_dafa66b5c7044a26bf70955c9c8f5ce6.jpg" },
+        { id: 6, name: "Cafe", price: 15000, img: "https://winci.com.vn/wp-content/uploads/2023/12/Cong-Thuc-Pha-Cafe-Milano-Hap-Dan.jpeg" },
+        { id: 7, name: "Matcha latte", price: 25000, img: "https://production-cdn.pharmacity.io/digital/original/plain/blog/matcha_latte_bao_nhieu_calo_cach_uong_matcha_latte_khong_tang_can_2_a2ff4b95c8-1.png?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAUYXZVMJM5QUYWSVO%2F20250509%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250509T023652Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Signature=788f2206b5e6bf2ddb0bdb1a8eb325b5ea8ed7cd674ba2d301c09acce38866a5" },
+        { id: 8, name: "Gà Viên Chiên", price: 30000, img: "https://sesofoods.com/cdn/shop/files/halal-ga-vien-chien-sesofoods2.png?v=1763694473" },
+        { id: 9, name: "Trà Chanh", price: 20000, img: "https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/177426/Originals/batch_huong-dan-pha-tra-chanh-mat-ong-1.jpg" },
+        { id: 101, name: "[COMBO] Trạm Dừng Chân Thanh Xuân: 2 Trà Sữa + 1 Bánh Tráng Trộn", price: 50000, img: "https://e7.pngegg.com/pngimages/903/518/png-clipart-united-states-information-symbol-combo-offer-text-logo-thumbnail.png" },
+        { id: 102, name: "[COMBO] Tám Chuyện: 1 Chân Gà Sả Tắc + 2 Trà Chanh", price: 85000, img: "https://e7.pngegg.com/pngimages/903/518/png-clipart-united-states-information-symbol-combo-offer-text-logo-thumbnail.png" },
+        { id: 103, name: "[COMBO] Vượt Deadline 🚀: Cafe + Cơm Cháy Chà Bông", price: 30000, img: "https://e7.pngegg.com/pngimages/903/518/png-clipart-united-states-information-symbol-combo-offer-text-logo-thumbnail.png" }
+    ];
+
+    // 2. Khai báo các biến giỏ hàng
+    let cart = [];
+    let discountPercent = 0;
+    let shipFee = 15000;
+
+    // 3. Hàm hiển thị Menu
+    function renderMenu() {
+        const menuDiv = document.getElementById('food-menu');
+        if(!menuDiv) return;
+        menuDiv.innerHTML = foods.map(food => `
+            <div class="food-card">
+                <img src="${food.img}" alt="${food.name}">
+                <h4>${food.name}</h4>
+                <p style="color: var(--primary-color); font-weight: bold;">${food.price.toLocaleString()}đ</p>
+                <button onclick="addToCart(${food.id})">Thêm vào giỏ </button>
+            </div>
+        `).join('');
+    }
+
+    // 4. Các hàm xử lý giỏ hàng (Giữ nguyên logic cũ đã sửa)
+    function addToCart(id) {
+        const food = foods.find(f => f.id === id);
+        const itemInCart = cart.find(item => item.id === id);
+        if (itemInCart) itemInCart.quantity++;
+        else cart.push({ ...food, quantity: 1 });
+        renderCart();
+    }
+
+    function changeQuantity(id, delta) {
+        const item = cart.find(i => i.id === id);
+        if (item) {
+            item.quantity += delta;
+            if (item.quantity <= 0) cart = cart.filter(i => i.id !== id);
+        }
+        renderCart();
+    }
+
+    function applyDiscount() {
+        const code = document.getElementById('coupon-input').value.toUpperCase();
+        if (code === "GEM10") {
+            discountPercent = 0.1;
+            alert("💎 Giảm 10% tiền hàng!");
+        } else {
+            alert("Mã không đúng!");
+            discountPercent = 0;
+        }
+        renderCart();
+    }
+
+    function applyShipCode() {
+        const code = document.getElementById('ship-coupon').value.toUpperCase();
+        const status = document.getElementById('ship-status');
+        if (code === "FREESHIP") {
+            shipFee = 0;
+            if(status) status.innerText = "✅ Đã Freeship!";
+            alert("🚚 Đã Freeship thành công!");
+        } else {
+            alert("Mã Freeship sai!");
+            shipFee = 15000;
+            if(status) status.innerText = "";
+        }
+        renderCart();
+    }
+
+    function renderCart() {
+        const cartDiv = document.getElementById('cart-content');
+        if (cart.length === 0) {
+            cartDiv.innerHTML = '<p>Hổng có món nào hết trơn...</p>';
+            document.getElementById('total-price').innerText = "Tổng cộng: 0đ";
+            return;
+        }
+
+        cartDiv.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <span style="flex:2"><b>${item.name}</b></span>
+                <div style="flex:1">
+                    <button class="btn-qty" onclick="changeQuantity(${item.id}, -1)">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="btn-qty" onclick="changeQuantity(${item.id}, 1)">+</button>
+                </div>
+                <span style="flex:1; text-align:right">${(item.price * item.quantity).toLocaleString()}đ</span>
+            </div>
+        `).join('');
+
+        let subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        let discountAmount = subtotal * discountPercent;
+        let finalTotal = subtotal - discountAmount + shipFee;
+
+        document.getElementById('total-price').innerHTML = `
+            <div style="font-size: 14px; color: #666; font-weight: normal; text-align: left;">
+                Tạm tính: ${subtotal.toLocaleString()}đ<br>
+                Giảm giá: -${discountAmount.toLocaleString()}đ<br>
+                Phí ship: ${shipFee.toLocaleString()}đ
+            </div>
+            <hr>
+            <div style="color: var(--primary-color); font-size: 1.2em; font-weight:bold;">
+                Tổng cộng: ${finalTotal.toLocaleString()}đ
+            </div>
+        `;
+    }
+
+    function checkout() {
+        const name = document.getElementById('cus-name').value;
+        const phone = document.getElementById('cus-phone').value;
+        const address = document.getElementById('cus-address').value;
+        if (cart.length === 0) return alert("Giỏ hàng trống!");
+        if (!name || !phone || !address) return alert("Nhập đủ thông tin giao hàng!");
+        alert(`🎉 Chúc mừng ${name}! Đơn hàng đã được nhận.`);
+        cart = [];
+        renderCart();
+    }
+
+    // Chạy menu ngay lập tức
+    renderMenu();
+</script>
+
+</body>
+</html>
